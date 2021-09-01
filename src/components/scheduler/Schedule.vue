@@ -1,6 +1,7 @@
 <template>
   <div
-    class="flex-box bg-white pv-15"
+    class="flex-box bg-white pv-15 border-radius-2"
+    :class="[isActiveSchedule?'bordered-primary-2 bordered-left-primary-4':'']"
   >
     <div class="flex-col-1" />
     <div class="flex-col-5">
@@ -14,7 +15,6 @@
     <div class="flex-col-3 flex-box justify-center">
         <span>
           {{ schedule['last_modified'] }}
-          <i class="fas fa-caret-down" />
         </span>
     </div>
   </div>
@@ -28,6 +28,11 @@
         type: Object,
         default: () => ({})
       }
+    },
+    computed: {
+      isActiveSchedule: function () {
+        return false;
+      },
     }
   };
 </script>

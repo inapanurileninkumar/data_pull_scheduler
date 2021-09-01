@@ -26,12 +26,13 @@
     </div>
     <div
       style="max-height: calc(100vh - 120px);overflow-y: auto;"
+      class="ph-10"
     >
       <schedule
         v-for="(schedule,scheduleIndex) in schedules"
         :key="schedule['id']+'_'+scheduleIndex"
         :schedule="schedule"
-        class="width-100 mt-5"
+        class="width-100 mb-5"
       />
     </div>
   </div>

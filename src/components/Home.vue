@@ -1,9 +1,14 @@
 <template>
   <div
     class="width-100 font-medium"
+    style="height: 100vh;max-height: 100vh;"
   >
-    <navbar />
-    <schedules-manager />
+    <navbar
+      class="width-100"
+    />
+    <div>
+      <schedules-manager />
+    </div>
   </div>
 </template>
 

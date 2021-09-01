@@ -24,8 +24,8 @@
 
   body {
     margin: 0;
-    padding-right: 60px;
-    /*overflow: hidden;*/
+    padding-right: 2px;
+    overflow: hidden;
     background: #f2f2f2;
   }
 </style>

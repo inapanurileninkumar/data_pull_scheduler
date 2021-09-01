@@ -1,7 +1,10 @@
+$primaryColor: "#449466";
+$primaryLiteColor: "#73bf90";
+$secondaryColor: "#4d5055";
+$mutedColor: "#9b9b9b";
 .flex-box {
   display: flex;
   $directions: ('flex-start', 'space-between', 'space-around', 'center', 'flex-end');
-
   @each $direction in $directions {
     &.align-#{$direction} {
       align-items: #{$direction};
@@ -10,7 +13,6 @@
       justify-content: #{$direction};
     }
   }
-
   @for $colLen from 1 through 12 {
     .flex-col-#{$colLen} {
       width: calc((100% / 12) * #{$colLen});
@@ -22,7 +24,8 @@
 
 $widths: (
     "auto":auto,
-    "100":100%
+    "100":100%,
+    "90":90%
 );
 @each $widthType, $widthVal in $widths {
   .width-#{$widthType} {
@@ -49,9 +52,9 @@ $spacingValues: (
     "15":15px,
     "20":20px,
     "30":30px,
+    "35":35px,
     "40":45px,
 );
-
 $spacingDirections: (
     "":(top, left, right, bottom),
     t:(top),
@@ -69,7 +72,6 @@ $spacingDirections: (
     vl:(top, bottom, left),
     vr:(top, bottom, right),
 );
-
 @each $spacingSize, $spacingValue in $spacingValues {
   @each $spacingDirection, $stylingDirections in $spacingDirections {
     .p#{$spacingDirection}-#{$spacingSize} {
@@ -82,16 +84,15 @@ $spacingDirections: (
         margin-#{$stylingDirection}: #{$spacingValue} !important;
       }
     }
-
   }
 }
 
 $borderRadiusVals: (
     2:2px,
+    5:5px,
     7:7px,
     10:20px
 );
-
 @each $borderRadiusType, $borderRadiusVal in $borderRadiusVals {
   .border-radius-#{$borderRadiusType} {
     border-radius: #{$borderRadiusVal};
@@ -99,16 +100,15 @@ $borderRadiusVals: (
 }
 
 $themeColors: (
-    "primary-lite" : "#73bf90",
-    "primary":"#449466",
+    "primary-lite" : $primaryLiteColor,
+    "primary":$primaryColor,
     "danger":"",
     "success":"",
     "white":white,
     "dark":"#202020",
-    "secondary":"#4d5055",
-    "muted":"#9b9b9b"
+    "secondary":$secondaryColor,
+    "muted":$mutedColor,
 );
-
 @each $themeColorName, $themeColorVal in $themeColors {
   .text-#{$themeColorName} {
     color: #{$themeColorVal}
@@ -116,5 +116,21 @@ $themeColors: (
 
   .bg-#{$themeColorName} {
     background-color: #{$themeColorVal};
+  }
+}
+
+@each $dir in ("", "-top", "-right", "-bottom", "-left") {
+  @each $borderColorName, $borderColorVal in ("":"rgba(235, 235, 235, 0.75)", "-dark":"#d3d3d3", "-primary":$primaryColor) {
+    @each $borderTypeName, $borderTypeVal in ("":"solid", "-dashed":"dashed") {
+      .bordered#{$dir}#{$borderTypeName}#{$borderColorName} {
+        border#{$dir}: 1px #{$borderTypeVal} #{$borderColorVal};
+      }
+
+      @for $borderWidth from 2 through 5 {
+        .bordered#{$dir}#{$borderColorName}#{$borderTypeName}-#{$borderWidth} {
+          border#{$dir}: #{$borderWidth}px #{$borderTypeVal} #{$borderColorVal};
+        }
+      }
+    }
   }
 }
