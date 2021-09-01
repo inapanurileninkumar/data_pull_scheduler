@@ -1,11 +1,20 @@
 <template>
-
+  <div
+    class="width-100 font-medium"
+  >
+    <navbar />
+    <schedules-manager />
+  </div>
 </template>
 
 <script>
-export default {
-  name: "Home.vue"
-}
+  import Navbar from '@/components/navbar';
+  import SchedulesManager from '@/components/scheduler/SchedulesManager';
+
+  export default {
+    name: 'Home',
+    components: { SchedulesManager, Navbar }
+  };
 </script>
 
 <style scoped>
