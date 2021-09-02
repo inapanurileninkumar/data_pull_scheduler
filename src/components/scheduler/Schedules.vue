@@ -32,7 +32,8 @@
         v-for="(schedule,scheduleIndex) in schedules"
         :key="schedule['id']+'_'+scheduleIndex"
         :schedule="schedule"
-        class="width-100 mb-5"
+        class="width-100 mb-5 pointer-cursor"
+        @click="selectSchedule(schedule)"
       />
     </div>
   </div>
@@ -44,201 +45,27 @@
   export default {
     name: 'Schedules',
     components: { Schedule },
-    data: function () {
-      return {
-        schedules: [
-          {
-            'id': 'abcde',
-            'label': 'abcde',
-            'data': {
-              'cols': 5,
-              'rows': 150
-            },
-            'last_modified': '20 Nov 2021'
-          },
-          {
-            'id': 'abcde',
-            'label': 'abcde',
-            'data': {
-              'cols': 5,
-              'rows': 150
-            },
-            'last_modified': '20 Nov 2021'
-          },
-          {
-            'id': 'abcde',
-            'label': 'abcde',
-            'data': {
-              'cols': 5,
-              'rows': 150
-            },
-            'last_modified': '20 Nov 2021'
-          },
-          {
-            'id': 'abcde',
-            'label': 'abcde',
-            'data': {
-              'cols': 5,
-              'rows': 150
-            },
-            'last_modified': '20 Nov 2021'
-          },
-          {
-            'id': 'abcde',
-            'label': 'abcde',
-            'data': {
-              'cols': 5,
-              'rows': 150
-            },
-            'last_modified': '20 Nov 2021'
-          },
-          {
-            'id': 'abcde',
-            'label': 'abcde',
-            'data': {
-              'cols': 5,
-              'rows': 150
-            },
-            'last_modified': '20 Nov 2021'
-          },
-          {
-            'id': 'abcde',
-            'label': 'abcde',
-            'data': {
-              'cols': 5,
-              'rows': 150
-            },
-            'last_modified': '20 Nov 2021'
-          },
-          {
-            'id': 'abcde',
-            'label': 'abcde',
-            'data': {
-              'cols': 5,
-              'rows': 150
-            },
-            'last_modified': '20 Nov 2021'
-          },
-          {
-            'id': 'abcde',
-            'label': 'abcde',
-            'data': {
-              'cols': 5,
-              'rows': 150
-            },
-            'last_modified': '20 Nov 2021'
-          },
-          {
-            'id': 'abcde',
-            'label': 'abcde',
-            'data': {
-              'cols': 5,
-              'rows': 150
-            },
-            'last_modified': '20 Nov 2021'
-          },
-          {
-            'id': 'abcde',
-            'label': 'abcde',
-            'data': {
-              'cols': 5,
-              'rows': 150
-            },
-            'last_modified': '20 Nov 2021'
-          },
-          {
-            'id': 'abcde',
-            'label': 'abcde',
-            'data': {
-              'cols': 5,
-              'rows': 150
-            },
-            'last_modified': '20 Nov 2021'
-          },
-          {
-            'id': 'abcde',
-            'label': 'abcde',
-            'data': {
-              'cols': 5,
-              'rows': 150
-            },
-            'last_modified': '20 Nov 2021'
-          },
-          {
-            'id': 'abcde',
-            'label': 'abcde',
-            'data': {
-              'cols': 5,
-              'rows': 150
-            },
-            'last_modified': '20 Nov 2021'
-          },
-          {
-            'id': 'abcde',
-            'label': 'abcde',
-            'data': {
-              'cols': 5,
-              'rows': 150
-            },
-            'last_modified': '20 Nov 2021'
-          },
-          {
-            'id': 'abcde',
-            'label': 'abcde',
-            'data': {
-              'cols': 5,
-              'rows': 150
-            },
-            'last_modified': '20 Nov 2021'
-          },
-          {
-            'id': 'abcde',
-            'label': 'abcde',
-            'data': {
-              'cols': 5,
-              'rows': 150
-            },
-            'last_modified': '20 Nov 2021'
-          },
-          {
-            'id': 'abcde',
-            'label': 'abcde',
-            'data': {
-              'cols': 5,
-              'rows': 150
-            },
-            'last_modified': '20 Nov 2021'
-          },
-          {
-            'id': 'abcde',
-            'label': 'abcde',
-            'data': {
-              'cols': 5,
-              'rows': 150
-            },
-            'last_modified': '20 Nov 2021'
-          },
-          {
-            'id': 'abcde',
-            'label': 'abcde',
-            'data': {
-              'cols': 5,
-              'rows': 150
-            },
-            'last_modified': '20 Nov 2021'
-          },
-          {
-            'id': 'abcde',
-            'label': 'abcde',
-            'data': {
-              'cols': 5,
-              'rows': 150
-            },
-            'last_modified': '20 Nov 2021'
-          },
-        ]
-      };
+    props: {
+      schedules: {
+        type: Array,
+        default: () => ([])
+      }
     },
+    emits: ['event-emitted'],
+    data: function () {
+      return {};
+    },
+    methods: {
+      selectSchedule: function (schedule) {
+        this.emitEvent('select-schedule', {
+          'schedule': schedule
+        });
+      },
+      //EVENTS
+      emitEvent: function (action, payload) {
+        this.$emit('event-emitted', action, payload);
+      }
+    }
   };
 </script>
 

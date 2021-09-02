@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex-box bg-white pv-15 border-radius-2"
+    class="schedule flex-box bg-white pv-15 border-radius-2"
     :class="[isActiveSchedule?'bordered-primary-2 bordered-left-primary-4':'']"
   >
     <div class="flex-col-1" />
@@ -21,6 +21,8 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex';
+
   export default {
     name: 'Schedule',
     props: {
@@ -30,13 +32,17 @@
       }
     },
     computed: {
+      ...mapGetters({
+        'getActiveSchedule': 'scheduleStore/getActiveSchedule'
+      }),
       isActiveSchedule: function () {
-        return false;
+        return this.getActiveSchedule && (this.getActiveSchedule['id'] === this.schedule['id']);
       },
     }
   };
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+  .schedule {
+  }
 </style>

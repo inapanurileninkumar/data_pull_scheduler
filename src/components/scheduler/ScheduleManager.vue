@@ -15,7 +15,7 @@
           <span
             class="text-bold text-dark"
           >
-            Film Actor Activity
+            {{ schedule['label'] }}
           </span>
           <i
             class="fas fa-times"
@@ -29,7 +29,7 @@
           Last Update :
         </span>
           <span>
-          {{ schedule['last_modified'] || '6 Hours Ago' }}
+          {{ getDateFromTimestamp(schedule['last_modified']) || 'N/A' }}
         </span>
         </div>
         <div
@@ -70,12 +70,12 @@
           Name :
         </span>
           <span>
-          Film Actor Weekly
+          {{ schedule['label'] }}
         </span>
         </div>
         <div>
         <span>
-          Created on January 12,2021 by Nuno Moura
+          Created on {{ schedule['created_time'] }} by {{ schedule['created_by'] }}
         </span>
         </div>
         <div class="bordered-top mt-10" />
@@ -88,7 +88,7 @@
           Rows:
         </span>
           <span>
-          5,462
+          {{ schedule['data']['rows'] }}
         </span>
           <span
             class="ml-10 text-bold"
@@ -96,7 +96,7 @@
           Columns:
         </span>
           <span>
-          3
+          {{ schedule['data']['cols'] }}
         </span>
           <div>
           <span
@@ -105,7 +105,7 @@
             Size:
           </span>
             <span>
-            328.00 KB
+             {{ schedule['data']['size'] }}
           </span>
           </div>
         </div>
@@ -130,7 +130,7 @@
             style="min-height: 100px"
           >
             <p>
-              SELECT * FROM "customer"
+              {{ schedule['data']['query_metrics'] }}
             </p>
           </div>
         </div>
@@ -145,7 +145,7 @@
             <span
               class="text-bold"
             >
-            DATA RETRIEVAL SCHEDULE
+            DATA RETRIEVAL SCHEDULE {{ schedule['schedule']['status'] }}
           </span>
               <boolean-input
                 class="ml-10"
@@ -166,7 +166,7 @@
             </div>
           </div>
           <div>
-            Every Week on Monday
+            {{ getDataRetrievalSchedule }}
           </div>
           <div
             class="mt-5"
@@ -250,6 +250,24 @@
       return {
         schedulePropertiesStyle: {},
       };
+    },
+    computed: {
+      getDataRetrievalSchedule: function () {
+        let period = '', selection = '';
+        switch (this.schedule['schedule']['period']) {
+          case 'just_once':
+            period = 'Just Once';
+            selection = '';
+            break;
+          case 'daily':
+            period = 'Daily';
+            break;
+          default:
+            period = '';
+            break;
+        }
+        return period + selection;
+      },
     },
     mounted: function () {
       let style = {};
