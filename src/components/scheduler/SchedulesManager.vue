@@ -135,6 +135,7 @@
           'delete-schedule': this.handleScheduleDelete,
           'cancelScheduleEdit': this.handleScheduleEditCancel,
           'createSchedule': this.createNewSchedule,
+          'saveEditingSchedule': this.handleEditingScheduleSave,
         };
         if (actionMap[action]) {
           actionMap[action](payload);
@@ -148,6 +149,11 @@
       },
       handleScheduleEdit: function (scheduleId) {
         this.editSchedule(scheduleId);
+      },
+      handleEditingScheduleSave: function (schedule) {
+        schedule['last_modified'] = this.getTimestampFromDate(new Date());
+        this.updateSchedule(schedule);
+        this.closeModal();
       },
       handleScheduleEditCancel: function () {
         this.closeModal();

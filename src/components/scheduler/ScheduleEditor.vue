@@ -128,6 +128,7 @@
         </span>
       <span
         class="ph-35 pv-5 border-radius-2 bg-primary ml-30 text-white"
+        @click="saveEditingSchedule"
       >
           Apply
         </span>
@@ -186,6 +187,9 @@
       },
       cancelEditing: function () {
         this.emitEvent('cancelScheduleEdit');
+      },
+      saveEditingSchedule: function () {
+        this.emitEvent('saveEditingSchedule', this.editingSchedule);
       },
       //EVENTS
       emitEvent: function (action, payload) {

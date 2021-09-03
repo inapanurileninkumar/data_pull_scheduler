@@ -16,6 +16,9 @@ export const scheduleStore = {
       let scheduleIndex = state['schedules'].findIndex(stateSchedule => stateSchedule['id'] === schedule['id']);
       if (scheduleIndex > -1) {
         state['schedules'][scheduleIndex] = schedule;
+        if (state['activeSchedule']['id'] === schedule['id']) {
+          state['activeSchedule'] = schedule;
+        }
       }
     },
     'REMOVE_SCHEDULE': function (state, scheduleId) {
