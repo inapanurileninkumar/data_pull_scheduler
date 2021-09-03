@@ -51,6 +51,7 @@
             on
           </span>
           <select
+            v-model="editingSchedule['schedule']['period_value']"
             :disabled="!editingSchedule['schedule']['status']"
             class="ml-10"
           >
