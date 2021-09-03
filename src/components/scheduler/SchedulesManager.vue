@@ -6,6 +6,7 @@
       <div class="flex-col-1 flex-box align-flex-start justify-center pt-40">
         <span
           class="pv-10 ph-14 border-radius-10 pointer-cursor bg-primary-lite"
+          @click="createNewSchedule"
         >
           <i class="fas fa-plus text-white" />
         </span>
@@ -76,13 +77,6 @@
       })
     },
     beforeMount: function () {
-      let firstSchedule = this.getSampleSchedule();
-      this.addNewSchedule(firstSchedule);
-      this.addNewSchedule(this.getSampleSchedule());
-      this.addNewSchedule(this.getSampleSchedule());
-      this.addNewSchedule(this.getSampleSchedule());
-      this.addNewSchedule(this.getSampleSchedule());
-      this.selectSchedule(firstSchedule);
     },
     methods: {
       ...mapActions({
@@ -130,6 +124,7 @@
           'edit-schedule': this.handleScheduleEdit,
           'delete-schedule': this.handleScheduleDelete,
           'cancelScheduleEdit': this.handleScheduleEditCancel,
+          'createSchedule': this.createNewSchedule,
         };
         if (actionMap[action]) {
           actionMap[action](payload);
@@ -146,6 +141,9 @@
       },
       handleScheduleEditCancel: function () {
         this.closeModal();
+      },
+      createNewSchedule: function () {
+        this.addNewSchedule(this.getSampleSchedule());
       },
       //MODAL
       openModal: function (component, data = {}) {

@@ -28,13 +28,44 @@
       style="max-height: calc(100vh - 120px);overflow-y: auto;"
       class="ph-10"
     >
-      <schedule
-        v-for="(schedule,scheduleIndex) in schedules"
-        :key="schedule['id']+'_'+scheduleIndex"
-        :schedule="schedule"
-        class="width-100 mb-5 pointer-cursor"
-        @click="selectSchedule(schedule)"
-      />
+      <template
+        v-if="schedules.length>0"
+      >
+        <schedule
+          v-for="(schedule,scheduleIndex) in schedules"
+          :key="schedule['id']+'_'+scheduleIndex"
+          :schedule="schedule"
+          class="width-100 mb-5 pointer-cursor"
+          @click="selectSchedule(schedule)"
+        />
+      </template>
+      <template
+        v-else
+      >
+        <div
+          class="mt-30"
+          style="text-align: center"
+        >
+          <span
+            class="font-regular text-muted"
+          >
+            No Schedules Available.
+          </span>
+          <div
+            class="mt-10 font-medium"
+          >
+            <span
+              class="text-primary text-underline pointer-cursor"
+              @click="emitEvent('createSchedule')"
+            >
+              Click here
+            </span>
+            <span>
+              to create a new schedule
+            </span>
+          </div>
+        </div>
+      </template>
     </div>
   </div>
 </template>
