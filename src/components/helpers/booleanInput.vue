@@ -4,7 +4,7 @@
       v-model="inputValue"
       type="checkbox"
       :disabled="disabled"
-      :checked="value"
+      :checked="inputValue"
       @input="handleInput"
     >
     <span class="slider"></span>
@@ -40,13 +40,13 @@
     },
     methods: {
       setupInput: function () {
-        this.inputValue = this.value;
+        this.inputValue = !! this.value;
       },
       handleInput: function () {
         if (this.disabled) return;
+        this.inuptValue = (! this.inputValue);
         this.$emit('input', this.inputValue);
         this.$emit('change', this.inputValue);
-        this.inuptValue = ! this.inputValue;
       },
     }
   };

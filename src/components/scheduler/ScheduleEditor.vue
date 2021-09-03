@@ -7,7 +7,7 @@
         Datapull Schedule
       </span>
       <boolean-input
-        :value="editingSchedule['schedule']['status']"
+        v-model="editingSchedule['schedule']['status']"
         @input="handleScheduleStatusChange"
         class="ml-10"
       />
@@ -171,35 +171,10 @@
     },
     methods: {
       setupEditingSchedule: function () {
-        this.editingSchedule = this.deepCopy(this.getEmptySchedule());
+        this.editingSchedule = this.deepCopy(this.schedule);
       },
       cancelEditing: function () {
         this.emitEvent('cancelScheduleEdit');
-      },
-      getEmptySchedule: function () {
-        return {
-          'id': this.getUniqId(),
-          'label': this.getRandomString(10),
-          'data': {
-            'cols': 2 + Math.ceil(Math.random() * 10),
-            'rows': Math.floor(Math.random() * 5000),
-            'size': `${ Number.parseFloat(Math.random() * 1000).toFixed(2) } KB`,
-            'query_metrics': 'SELECT * FROM "customer"'
-          },
-          'schedule': {
-            'status': (Math.random() >= 0.5),
-            'period': 'daily',
-          },
-          // 'created_time': this.getTimestampFromDate(this.getRandomDate(leastDate, todaysDate)),
-          // 'created_by': this.getRandomString(10),
-          // 'last_modified': this.getTimestampFromDate(this.getRandomDate(leastDate, todaysDate)),
-          // 'last_datapull': this.getTimestampFromDate(this.getRandomDate(leastDate, todaysDate)),
-          // 'next_datapull': this.getTimestampFromDate(this.getRandomDate(leastDate, todaysDate)),
-          // 'range': {
-          //   'start': this.getTimestampFromDate(this.getRandomDate(leastDate, todaysDate)),
-          // },
-          'auto_sync': false
-        };
       },
       //EVENTS
       emitEvent: function (action, payload) {

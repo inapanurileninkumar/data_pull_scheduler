@@ -42,7 +42,7 @@
           style="min-width: 30vw;max-width: 30vw"
         >
           <schedule-editor
-            v-bind="getModalComponentProps"
+            :schedule="modalData['schedule']"
             @event-emitted="handleChildEvent"
           />
         </div>
@@ -154,14 +154,6 @@
       },
       closeModal: function () {
         this.isModalActive = false;
-      },
-      getModalComponentProps: function () {
-        switch (this.modalComponent) {
-          case 'editSchedule':
-            return {
-              'schedule': this.modalData['schedule']
-            };
-        }
       },
     }
   };
