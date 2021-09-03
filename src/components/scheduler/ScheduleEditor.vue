@@ -79,14 +79,24 @@
           </div>
           <div>
             <radio-input
+              v-model="editingSchedule['retrieval']['type']"
+              :value="editingSchedule['retrieval']['type']"
+              :disabled="!editingSchedule['schedule']['status']"
+              data="now"
               class="mt-10"
               label="Now"
+              @input="(data)=>editingSchedule['retrieval']['type']=data"
             />
           </div>
           <div>
             <radio-input
+              v-model="editingSchedule['retrieval']['type']"
+              :value="editingSchedule['retrieval']['type']"
+              :disabled="!editingSchedule['schedule']['status']"
+              data="specified_time"
               class="mt-10"
               label="At specific time"
+              @input="(data)=>editingSchedule['retrieval']['type']=data"
             />
           </div>
         </div>

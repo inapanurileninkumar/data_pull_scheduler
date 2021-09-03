@@ -3,22 +3,50 @@
     <input
       type="radio"
       :name="name"
+      :checked="isChecked"
+      @input="handleInput"
     >
-    <span class="checkmark"></span>
+    <span
+      :class="[disabled?'disabled':'']"
+      class="checkmark"
+    />
   </label>
 </template>
 
 <script>
   export default {
     name: 'RadioInput',
+    emits: ['input'],
     props: {
       label: {
         type: String,
         default: ''
       },
+      value: {
+        type: [String, Number, Boolean],
+        default: null,
+      },
+      data: {
+        type: [String, Number, Boolean],
+        default: undefined
+      },
       name: {
         type: String,
         default: ''
+      },
+      disabled: {
+        type: Boolean,
+        default: false
+      }
+    },
+    computed: {
+      isChecked: function () {
+        return (this.value === this.data);
+      }
+    },
+    methods: {
+      handleInput: function () {
+        this.$emit('input', this.data);
       }
     }
   };
@@ -39,6 +67,35 @@
       cursor: pointer;
       height: 0;
       width: 0;
+
+      &:checked ~ .checkmark {
+        background-color: white;
+        border: 2px solid green;
+        border-radius: 50%;
+
+        &:after {
+          display: block;
+        }
+
+        &.disabled {
+          border: 2px solid lightgrey;
+        }
+      }
+    }
+
+    .checkmark {
+      &:after {
+        left: 2px;
+        top: 2px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: green;
+      }
+
+      &.disabled:after {
+        background-color: lightgrey !important;
+      }
     }
   }
 
@@ -52,38 +109,11 @@
     height: 10px;
     width: 10px;
     background-color: transparent;
-  }
 
-  /* On mouse-over, add a grey background color */
-  .container:hover input ~ .checkmark {
-  }
-
-  /* When the checkbox is checked, add a blue background */
-  .container input:checked ~ .checkmark {
-    background-color: white;
-    border: 2px solid green;
-    border-radius: 50%;
-  }
-
-  /* Create the checkmark/indicator (hidden when not checked) */
-  .checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-  }
-
-  /* Show the checkmark when checked */
-  .container input:checked ~ .checkmark:after {
-    display: block;
-  }
-
-  /* Style the checkmark/indicator */
-  .container .checkmark:after {
-    left: 2px;
-    top: 2px;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: green;
+    &:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
   }
 </style>

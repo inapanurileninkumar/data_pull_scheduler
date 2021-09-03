@@ -87,7 +87,10 @@
       }),
       getSampleSchedule: function () {
         let todaysDate = new Date();
+        let tomorrow = new Date(todaysDate);
+        tomorrow.setDate(tomorrow.getDate() + 1);
         let leastDate = new Date('01/01/2019 00:00:00');
+        let isRetrievingNow = (Math.random() >= 0.5);
         return {
           'id': this.getUniqId(),
           'label': this.getRandomString(10),
@@ -99,17 +102,23 @@
           },
           'schedule': {
             'status': (Math.random() >= 0.5),
-            'period': 'daily',
-            'period_value': null,
+            'period': 'monthly',
+            'period_value': '23',
           },
           'created_time': this.getTimestampFromDate(this.getRandomDate(leastDate, todaysDate)),
           'created_by': this.getRandomString(10),
           'last_modified': this.getTimestampFromDate(this.getRandomDate(leastDate, todaysDate)),
           'last_datapull': this.getTimestampFromDate(this.getRandomDate(leastDate, todaysDate)),
           'next_datapull': this.getTimestampFromDate(this.getRandomDate(leastDate, todaysDate)),
-          'range': {
-            'start': this.getTimestampFromDate(this.getRandomDate(leastDate, todaysDate)),
-            // 'end': this.getTimestampFromDate('02/13/2009 23:31:30')
+          'retrieval': {
+            'type': isRetrievingNow ? 'now' : 'specified_time',
+            'specific_time': this.getTimestampFromDate(
+              isRetrievingNow
+                ? todaysDate
+                : this.getRandomDate(todaysDate, tomorrow)
+            ),
+            'time': this.getTimestampFromDate(this.getRandomDate(todaysDate, tomorrow)),
+            'next_retrievals': []
           },
           'auto_sync': (Math.random() >= 0.5)
         };

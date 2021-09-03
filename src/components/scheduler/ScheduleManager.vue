@@ -179,14 +179,14 @@
             <div
               class="mt-5"
             >
-          <span
-            class="text-bold"
-          >
-            Range:
-          </span>
+              <span
+                class="text-bold"
+              >
+                Range:
+              </span>
               <span>
-            Start {{ getDateFromTimestamp(schedule['range']['start']) }}
-          </span>
+                Start {{ getDateFromTimestamp(schedule['retrieval']['time']) }}
+              </span>
             </div>
             <div
               class="mt-20"
@@ -278,6 +278,16 @@
             break;
           case 'daily':
             period = 'Daily';
+            break;
+          case 'weekly':
+            period = 'Every week on ';
+            selection = this.schedule['schedule']['period_value'];
+            selection = (
+              selection[0].toUpperCase() + selection.substring(1)
+            );
+            break;
+          case 'monthly':
+            period = 'Every month on ' + this.schedule['schedule']['period_value'];
             break;
           default:
             period = '';
