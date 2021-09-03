@@ -8,6 +8,7 @@
       </span>
       <boolean-input
         v-model="editingSchedule['schedule']['status']"
+        :value="editingSchedule['schedule']['status']"
         @input="handleScheduleStatusChange"
         class="ml-10"
       />

@@ -44,9 +44,9 @@
       },
       handleInput: function () {
         if (this.disabled) return;
+        this.$emit('input', ! this.inputValue);
+        this.$emit('change', ! this.inputValue);
         this.inuptValue = (! this.inputValue);
-        this.$emit('input', this.inputValue);
-        this.$emit('change', this.inputValue);
       },
     }
   };
