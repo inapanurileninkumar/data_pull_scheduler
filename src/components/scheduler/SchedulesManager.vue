@@ -30,6 +30,23 @@
         </div>
       </div>
     </div>
+    <modal
+      v-if="isModalActive"
+    >
+      <template
+        v-if="modalComponent==='editSchedule'"
+      >
+        <div
+          class="pv-20 ph-30"
+          style="min-width: 30vw;max-width: 30vw"
+        >
+          <schedule-editor
+            v-bind="getModalComponentProps"
+            @event-emitted="handleChildEvent"
+          />
+        </div>
+      </template>
+    </modal>
   </div>
 </template>
 
@@ -37,10 +54,21 @@
   import Schedules from '@/components/scheduler/Schedules';
   import ScheduleManager from '@/components/scheduler/ScheduleManager';
   import { mapGetters, mapActions } from 'vuex';
+  import Modal from '@/components/helpers/Modal';
+  import ScheduleEditor from '@/components/scheduler/ScheduleEditor';
 
   export default {
     name: 'SchedulesManager',
-    components: { ScheduleManager, Schedules },
+    components: { ScheduleEditor, Modal, ScheduleManager, Schedules },
+    data: function () {
+      return {
+        //MODAL SECTION
+        isModalActive: false,
+        modalComponent: 'editSchedule',
+        modalData: {},
+        //DATA SECTION
+      };
+    },
     computed: {
       ...mapGetters({
         'availableSchedules': 'scheduleStore/getAvailableSchedules',
@@ -60,7 +88,8 @@
       ...mapActions({
         'addNewSchedule': 'scheduleStore/addNewSchedule',
         'selectSchedule': 'scheduleStore/setActiveSchedule',
-        'removeSchedule': 'scheduleStore/removeSchedule'
+        'removeSchedule': 'scheduleStore/removeSchedule',
+        'updateSchedule': 'scheduleStore/updateSchedule'
       }),
       getSampleSchedule: function () {
         let todaysDate = new Date();
@@ -90,11 +119,17 @@
           'auto_sync': (Math.random() >= 0.5)
         };
       },
+      editSchedule: function (scheduleId) {
+        let schedule = this.availableSchedules.find(storeSchedule => storeSchedule['id'] === scheduleId);
+        this.openModal('editSchedule', { 'schedule': this.deepCopy(schedule) });
+      },
       //EVENT HANDLERS
       handleChildEvent: function (action, payload) {
         let actionMap = {
           'select-schedule': this.handleSelectedSchedule,
+          'edit-schedule': this.handleScheduleEdit,
           'delete-schedule': this.handleScheduleDelete,
+          'cancelScheduleEdit': this.handleScheduleEditCancel,
         };
         if (actionMap[action]) {
           actionMap[action](payload);
@@ -105,7 +140,30 @@
       },
       handleScheduleDelete: function (scheduleId) {
         this.removeSchedule(scheduleId);
-      }
+      },
+      handleScheduleEdit: function (scheduleId) {
+        this.editSchedule(scheduleId);
+      },
+      handleScheduleEditCancel: function () {
+        this.closeModal();
+      },
+      //MODAL
+      openModal: function (component, data = {}) {
+        this.modalComponent = component;
+        this.modalData = data;
+        this.isModalActive = true;
+      },
+      closeModal: function () {
+        this.isModalActive = false;
+      },
+      getModalComponentProps: function () {
+        switch (this.modalComponent) {
+          case 'editSchedule':
+            return {
+              'schedule': this.modalData['schedule']
+            };
+        }
+      },
     }
   };
 </script>

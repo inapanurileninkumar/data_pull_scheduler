@@ -144,11 +144,11 @@
             <div
               class="flex-box align-center"
             >
-            <span
-              class="text-bold"
-            >
-            DATA RETRIEVAL SCHEDULE
-          </span>
+              <span
+                class="text-bold"
+              >
+                DATA RETRIEVAL SCHEDULE
+              </span>
               <boolean-input
                 disabled
                 :value="schedule['schedule']['status']"
@@ -157,7 +157,8 @@
             </div>
             <div>
             <span
-              class="text-underline"
+              class="text-underline pointer-cursor"
+              @click="editSchedule"
             >
               Edit Schedule
             </span>
@@ -169,72 +170,81 @@
             </span>
             </div>
           </div>
-          <div>
-            {{ getDataRetrievalSchedule }}
-          </div>
-          <div
-            class="mt-5"
+          <template
+            v-if="schedule['schedule']['status']"
           >
+            <div>
+              {{ getDataRetrievalSchedule }}
+            </div>
+            <div
+              class="mt-5"
+            >
           <span
             class="text-bold"
           >
             Range:
           </span>
-            <span>
+              <span>
             Start {{ getDateFromTimestamp(schedule['range']['start']) }}
           </span>
-          </div>
-          <div
-            class="mt-20"
-          >
+            </div>
+            <div
+              class="mt-20"
+            >
           <span
             class="text-bold"
           >
             Last datapull:
           </span>
-            <span>
+              <span>
             {{ getDateFromTimestamp(schedule['last_datapull']) }}
           </span>
-          </div>
-          <div
-            class="mt-5"
-          >
+            </div>
+            <div
+              class="mt-5"
+            >
           <span
             class="text-bold"
           >
             Next schedule datapull:
           </span>
-            <span>
+              <span>
             {{ getDateFromTimestamp(schedule['next_datapull']) }}
           </span>
-          </div>
+            </div>
+          </template>
         </div>
-        <div class="bordered-top mt-10" />
-        <div
-          class="mt-10"
+
+        <template
+          v-if="schedule['schedule']['status']"
         >
-          <div class="width-100">
+          <div class="bordered-top mt-10" />
+          <div
+            class="mt-10"
+          >
+            <div class="width-100">
           <span
             class="text-bold"
           >
             SYNC SETTINGS
           </span>
-            <div
-              class="mt-5 flex-box align-center"
-            >
+              <div
+                class="mt-5 flex-box align-center"
+              >
             <span
               class="font-small"
             >
               AUTO-SYNC
             </span>
-              <boolean-input
-                :value="schedule['auto_sync']"
-                disabled
-                class="ml-10"
-              />
+                <boolean-input
+                  :value="schedule['auto_sync']"
+                  disabled
+                  class="ml-10"
+                />
+              </div>
             </div>
           </div>
-        </div>
+        </template>
       </div>
     </div>
   </div>
@@ -292,6 +302,9 @@
       },
       deleteSchedule: function () {
         this.emitEvent('delete-schedule', this.schedule['id']);
+      },
+      editSchedule: function () {
+        this.emitEvent('edit-schedule', this.schedule['id']);
       },
       emitEvent: function (action, payload) {
         this.$emit('event-emitted', action, payload);

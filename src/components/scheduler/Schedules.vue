@@ -17,7 +17,7 @@
           Cols | Rows
         </span>
       </div>
-      <div class="flex-col-3 flex-box justify-center align-center">
+      <div class="flex-col-3 flex-box align-center">
         <span>
           Last modified
           <i class="fas fa-caret-down" />

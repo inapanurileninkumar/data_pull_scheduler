@@ -9,6 +9,13 @@ export const globalMixin = {
       };
     },
     methods: {
+      deepCopy: function (obj) {
+        try {
+          return JSON.parse(JSON.stringify(obj));
+        } catch (e) {
+          return undefined;
+        }
+      },
       getUniqId: function () {
         return 'xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx'.replace(/[x]/g, (c) => {
           let r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
@@ -30,7 +37,7 @@ export const globalMixin = {
       },
       getFormattedDate: function (date, preFormattedDate = false, hideYear = false, includeTime = true) {
         const day = date.getDate();
-        const month = this.monthNames[date.getMonth()];
+        const month = this.monthNames[date.getMonth()].substring(0, 3);
         const year = date.getFullYear();
         const hours = date.getHours();
         let minutes = date.getMinutes();

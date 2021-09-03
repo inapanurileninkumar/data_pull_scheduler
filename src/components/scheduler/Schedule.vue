@@ -12,7 +12,7 @@
           {{ schedule['data']['cols'] }} | {{ schedule['data']['rows'] }}
         </span>
     </div>
-    <div class="flex-col-3 flex-box justify-center">
+    <div class="flex-col-3 flex-box">
         <span>
           {{ getDaysAgoFromTimestamp(schedule['last_modified'], false) }}
         </span>
