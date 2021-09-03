@@ -1,13 +1,48 @@
 <template>
   <label class="switch">
-    <input type="checkbox" checked>
+    <input
+      v-model="inputValue"
+      type="checkbox"
+      :disabled="disabled"
+      :checked="inputValue"
+      @input="handleInput"
+    >
     <span class="slider"></span>
   </label>
 </template>
 
 <script>
   export default {
-    name: 'booleanInput'
+    name: 'booleanInput',
+    props: {
+      value: {
+        type: Boolean,
+        default: false
+      },
+      disabled: {
+        type: Boolean,
+        default: false,
+      }
+    },
+    emits: ['input', 'change'],
+    data: function () {
+      return {
+        inputValue: false,
+      };
+    },
+    watch: {
+      value: function () {
+        this.inputValue = this.value;
+      }
+    },
+    methods: {
+      handleInput: function () {
+        if (this.disabled) return;
+        this.inuptValue = ! this.inputValue;
+        this.$emit('input', this.inputValue);
+        this.$emit('change', this.inputValue);
+      },
+    }
   };
 </script>
 

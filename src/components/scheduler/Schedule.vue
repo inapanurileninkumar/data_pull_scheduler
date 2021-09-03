@@ -14,7 +14,7 @@
     </div>
     <div class="flex-col-3 flex-box justify-center">
         <span>
-          {{ schedule['last_modified'] }}
+          {{ getDaysAgoFromTimestamp(schedule['last_modified'], false) }}
         </span>
     </div>
   </div>

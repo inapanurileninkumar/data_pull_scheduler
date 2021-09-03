@@ -25,6 +25,7 @@
         >
           <schedule-manager
             :schedule="getActiveSchedule"
+            @event-emitted="handleChildEvent"
           />
         </div>
       </div>
@@ -47,40 +48,53 @@
       })
     },
     beforeMount: function () {
+      let firstSchedule = this.getSampleSchedule();
+      this.addNewSchedule(firstSchedule);
       this.addNewSchedule(this.getSampleSchedule());
       this.addNewSchedule(this.getSampleSchedule());
       this.addNewSchedule(this.getSampleSchedule());
       this.addNewSchedule(this.getSampleSchedule());
-      this.addNewSchedule(this.getSampleSchedule());
+      this.selectSchedule(firstSchedule);
     },
     methods: {
       ...mapActions({
         'addNewSchedule': 'scheduleStore/addNewSchedule',
-        'selectSchedule': 'scheduleStore/setActiveSchedule'
+        'selectSchedule': 'scheduleStore/setActiveSchedule',
+        'removeSchedule': 'scheduleStore/removeSchedule'
       }),
       getSampleSchedule: function () {
+        let todaysDate = new Date();
+        let leastDate = new Date('01/01/2019 00:00:00');
         return {
           'id': this.getUniqId(),
           'label': this.getRandomString(10),
           'data': {
-            'cols': Math.ceil(Math.random() * 10),
+            'cols': 2 + Math.ceil(Math.random() * 10),
             'rows': Math.floor(Math.random() * 5000),
             'size': `${ Number.parseFloat(Math.random() * 1000).toFixed(2) } KB`,
             'query_metrics': 'SELECT * FROM "customer"'
           },
           'schedule': {
             'status': (Math.random() >= 0.5),
-            'period': 'daily'
+            'period': 'daily',
           },
-          'created_time': this.getTimestampFromDate('02/13/2009 23:31:30'),
+          'created_time': this.getTimestampFromDate(this.getRandomDate(leastDate, todaysDate)),
           'created_by': this.getRandomString(10),
-          'last_modified': this.getTimestampFromDate('02/13/2009 23:31:30'),
+          'last_modified': this.getTimestampFromDate(this.getRandomDate(leastDate, todaysDate)),
+          'last_datapull': this.getTimestampFromDate(this.getRandomDate(leastDate, todaysDate)),
+          'next_datapull': this.getTimestampFromDate(this.getRandomDate(leastDate, todaysDate)),
+          'range': {
+            'start': this.getTimestampFromDate(this.getRandomDate(leastDate, todaysDate)),
+            // 'end': this.getTimestampFromDate('02/13/2009 23:31:30')
+          },
+          'auto_sync': (Math.random() >= 0.5)
         };
       },
       //EVENT HANDLERS
       handleChildEvent: function (action, payload) {
         let actionMap = {
           'select-schedule': this.handleSelectedSchedule,
+          'delete-schedule': this.handleScheduleDelete,
         };
         if (actionMap[action]) {
           actionMap[action](payload);
@@ -89,6 +103,9 @@
       handleSelectedSchedule: function ({ schedule }) {
         this.selectSchedule(schedule);
       },
+      handleScheduleDelete: function (scheduleId) {
+        this.removeSchedule(scheduleId);
+      }
     }
   };
 </script>

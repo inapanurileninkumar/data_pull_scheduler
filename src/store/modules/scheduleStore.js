@@ -13,7 +13,21 @@ export const scheduleStore = {
       state['schedules'].push(schedule);
     },
     'SET_ACTIVE_SCHEDULE': function (state, schedule) {
-      state['activeSchedule'] = schedule;
+      if (schedule && state['activeSchedule']) {
+        if (state['activeSchedule']['id'] === schedule['id']) {
+          state['activeSchedule'] = null;
+        } else {
+          state['activeSchedule'] = schedule;
+        }
+      } else {
+        state['activeSchedule'] = schedule;
+      }
+    },
+    'REMOVE_SCHEDULE': function (state, scheduleId) {
+      state['schedules'] = state['schedules'].filter(schedule => schedule['id'] !== scheduleId);
+      if (state['activeSchedule']['id'] === scheduleId) {
+        state['activeSchedule'] = null;
+      }
     }
   },
   actions: {
@@ -22,6 +36,9 @@ export const scheduleStore = {
     },
     setActiveSchedule: function (state, schedule) {
       state.commit('SET_ACTIVE_SCHEDULE', schedule);
+    },
+    removeSchedule: function (state, scheduleId) {
+      state.commit('REMOVE_SCHEDULE', scheduleId);
     }
   }
 };

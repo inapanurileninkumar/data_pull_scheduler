@@ -18,8 +18,9 @@
             {{ schedule['label'] }}
           </span>
           <i
-            class="fas fa-times"
+            class="fas fa-times pointer-cursor"
             style="color:#d3d3d3"
+            @click="closeActiveSchedule"
           />
         </div>
         <div>
@@ -29,7 +30,7 @@
           Last Update :
         </span>
           <span>
-          {{ getDateFromTimestamp(schedule['last_modified']) || 'N/A' }}
+          {{ getDaysAgoFromTimestamp(schedule['last_modified']) || 'N/A' }}
         </span>
         </div>
         <div
@@ -48,8 +49,9 @@
             </span>
           </div>
           <i
-            class="far fa-trash-alt"
+            class="far fa-trash-alt pointer-cursor"
             style="color:#646363"
+            @click="deleteSchedule"
           />
         </div>
       </div>
@@ -75,7 +77,7 @@
         </div>
         <div>
         <span>
-          Created on {{ schedule['created_time'] }} by {{ schedule['created_by'] }}
+          Created on {{ getDateFromTimestamp(schedule['created_time']) }} by {{ schedule['created_by'] }}
         </span>
         </div>
         <div class="bordered-top mt-10" />
@@ -145,9 +147,11 @@
             <span
               class="text-bold"
             >
-            DATA RETRIEVAL SCHEDULE {{ schedule['schedule']['status'] }}
+            DATA RETRIEVAL SCHEDULE
           </span>
               <boolean-input
+                disabled
+                :value="schedule['schedule']['status']"
                 class="ml-10"
               />
             </div>
@@ -177,7 +181,7 @@
             Range:
           </span>
             <span>
-            Start February 26,2021 06:35PM
+            Start {{ getDateFromTimestamp(schedule['range']['start']) }}
           </span>
           </div>
           <div
@@ -189,7 +193,7 @@
             Last datapull:
           </span>
             <span>
-            January 13,2021 09:50PM
+            {{ getDateFromTimestamp(schedule['last_datapull']) }}
           </span>
           </div>
           <div
@@ -201,7 +205,7 @@
             Next schedule datapull:
           </span>
             <span>
-            January 13,2021 09:50PM
+            {{ getDateFromTimestamp(schedule['next_datapull']) }}
           </span>
           </div>
         </div>
@@ -224,6 +228,8 @@
               AUTO-SYNC
             </span>
               <boolean-input
+                :value="schedule['auto_sync']"
+                disabled
                 class="ml-10"
               />
             </div>
@@ -240,6 +246,7 @@
   export default {
     name: 'ScheduleManager',
     components: { BooleanInput },
+    emits: ['event-emitted'],
     props: {
       schedule: {
         type: Object,
@@ -279,6 +286,17 @@
       }
       this.schedulePropertiesStyle = style;
     },
+    methods: {
+      closeActiveSchedule: function () {
+        this.emitEvent('select-schedule', { 'schedule': null });
+      },
+      deleteSchedule: function () {
+        this.emitEvent('delete-schedule', this.schedule['id']);
+      },
+      emitEvent: function (action, payload) {
+        this.$emit('event-emitted', action, payload);
+      }
+    }
   };
 </script>
 
