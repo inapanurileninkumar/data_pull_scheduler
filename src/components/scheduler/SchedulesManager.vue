@@ -100,6 +100,7 @@
           'schedule': {
             'status': (Math.random() >= 0.5),
             'period': 'daily',
+            'period_value': null,
           },
           'created_time': this.getTimestampFromDate(this.getRandomDate(leastDate, todaysDate)),
           'created_by': this.getRandomString(10),

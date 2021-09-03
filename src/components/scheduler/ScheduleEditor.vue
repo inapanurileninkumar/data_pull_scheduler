@@ -25,64 +25,86 @@
       <div
         class="flex-box mt-20 align-center"
       >
-      <span
-        class="text-bold"
-      >
-        Retrieve Data
-      </span>
-        <select
-          :disabled="!editingSchedule['schedule']['status']"
-          class="ml-10"
-        >
-          <option value="">Select</option>
-          <option value="volvo">Volvo</option>
-        </select>
         <span
-          class="ml-10"
+          class="text-bold"
         >
-        on
-      </span>
+          Retrieve Data
+        </span>
         <select
+          v-model="editingSchedule['schedule']['period']"
           :disabled="!editingSchedule['schedule']['status']"
           class="ml-10"
         >
           <option value="">Select</option>
-          <option value="volvo">Volvo</option>
+          <option value="just_once">Just Once</option>
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
         </select>
+        <template
+          v-if="showPeriodValueOptions"
+        >
+          <span
+            class="ml-10"
+          >
+            on
+          </span>
+          <select
+            :disabled="!editingSchedule['schedule']['status']"
+            class="ml-10"
+          >
+            <option
+              v-for="(periodValue,periodValueIndex) in getPeriodValues"
+              :key="periodValue['label']+'_'+periodValueIndex"
+              :value="periodValue['value']"
+            >
+              {{ periodValue['label'] }}
+            </option>
+          </select>
+        </template>
       </div>
-      <div
-        class="mt-20"
+      <template
+        v-if="showDataRetrievalOptions"
       >
-        <div>
+        <div
+          class="mt-20"
+        >
+          <div>
         <span
           class="text-bold"
         >
           Start Retrieving
         </span>
+          </div>
+          <div>
+            <radio-input
+              class="mt-10"
+              label="Now"
+            />
+          </div>
+          <div>
+            <radio-input
+              class="mt-10"
+              label="At specific time"
+            />
+          </div>
         </div>
-        <div>
-          <radio-input
-            class="mt-10"
-            label="Now"
-          />
-        </div>
-        <div>
-          <radio-input
-            class="mt-10"
-            label="At specific time"
-          />
-        </div>
-      </div>
-      <div
-        class="mt-50"
-      >
+        <div
+          class="mt-50"
+        >
         <span
           class="text-bold"
         >
           The data will be pulled on
         </span>
-      </div>
+        </div>
+      </template>
     </div>
+    <template
+      v-if="!showDataRetrievalOptions"
+    >
+      <div class="mt-150" />
+    </template>
     <div
       class="mt-20 flex-box align-center justify-flex-end"
     >
@@ -105,6 +127,7 @@
 <script>
   import BooleanInput from '@/components/helpers/booleanInput';
   import RadioInput from '@/components/helpers/RadioInput';
+  import { scheduleStaticData } from '@/mixins/scheduleStaticData';
 
   export default {
     name: 'ScheduleEditor',
@@ -114,11 +137,26 @@
         default: null
       }
     },
+    mixins: [scheduleStaticData],
     components: { RadioInput, BooleanInput },
     data: function () {
       return {
         editingSchedule: null,
       };
+    },
+    computed: {
+      getPeriodValues: function () {
+        return [
+          { 'label': 'Select', value: null },
+          ...this.getPeriodValueOptions(this.editingSchedule['schedule']['period'])
+        ];
+      },
+      showPeriodValueOptions: function () {
+        return (['just_once', 'daily'].indexOf(this.editingSchedule['schedule']['period']) === -1);
+      },
+      showDataRetrievalOptions: function () {
+        return (this.editingSchedule['schedule']['period'] !== 'just_once');
+      },
     },
     watch: {
       schedule: {
