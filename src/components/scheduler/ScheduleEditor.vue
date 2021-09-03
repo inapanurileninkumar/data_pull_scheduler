@@ -88,15 +88,23 @@
               @input="(data)=>editingSchedule['retrieval']['type']=data"
             />
           </div>
-          <div>
+          <div
+            class="flex-box"
+          >
             <radio-input
               v-model="editingSchedule['retrieval']['type']"
               :value="editingSchedule['retrieval']['type']"
               :disabled="!editingSchedule['schedule']['status']"
               data="specified_time"
-              class="mt-10"
+              class="mt-10 mt--5"
               label="At specific time"
               @input="(data)=>editingSchedule['retrieval']['type']=data"
+            />
+            <input
+              v-model="editingScheduleRetrievalTime"
+              :disabled="editingSchedule['retrieval']['type']!=='specified_time'"
+              type="date"
+              class="mtl-10"
             />
           </div>
         </div>
@@ -154,6 +162,7 @@
     data: function () {
       return {
         editingSchedule: null,
+        editingScheduleRetrievalTime: new Date(),
       };
     },
     computed: {
@@ -184,11 +193,24 @@
     methods: {
       setupEditingSchedule: function () {
         this.editingSchedule = this.deepCopy(this.schedule);
+        if (this.schedule['retrieval']['type'] === 'specified_time') {
+          let editingScheduleRetrievalTime = new Date(this.schedule['retrieval']['time'] * 1000);
+          let year = editingScheduleRetrievalTime.getFullYear();
+          let month = (editingScheduleRetrievalTime.getMonth() + 1);
+          month = (month < 10 ? '0' : '') + month;
+          let date = editingScheduleRetrievalTime.getDate();
+          date = (date < 10 ? '0' : '') + date;
+          this.editingScheduleRetrievalTime = (year + '-' + month + '-' + date);
+        }
       },
       cancelEditing: function () {
         this.emitEvent('cancelScheduleEdit');
       },
       saveEditingSchedule: function () {
+        let retrievalType = this.editingSchedule['retrieval']['type'];
+        this.editingSchedule['retrieval']['time'] = this.getTimestampFromDate(
+          retrievalType === 'now' ? (new Date()) : this.editingScheduleRetrievalTime
+        );
         this.emitEvent('saveEditingSchedule', this.editingSchedule);
       },
       //EVENTS

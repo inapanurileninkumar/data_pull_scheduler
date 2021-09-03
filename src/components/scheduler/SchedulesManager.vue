@@ -112,11 +112,6 @@
           'next_datapull': this.getTimestampFromDate(this.getRandomDate(leastDate, todaysDate)),
           'retrieval': {
             'type': isRetrievingNow ? 'now' : 'specified_time',
-            'specific_time': this.getTimestampFromDate(
-              isRetrievingNow
-                ? todaysDate
-                : this.getRandomDate(todaysDate, tomorrow)
-            ),
             'time': this.getTimestampFromDate(this.getRandomDate(todaysDate, tomorrow)),
             'next_retrievals': []
           },
